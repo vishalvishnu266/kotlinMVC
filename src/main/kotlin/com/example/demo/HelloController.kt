@@ -5,6 +5,7 @@ import kotlinx.html.dom.createHTMLDocument
 import kotlinx.html.dom.serialize
 import kotlinx.html.stream.createHTML
 import org.springframework.http.MediaType
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestMapping
@@ -41,7 +42,7 @@ class HelloController(private val db: DatabaseRepository) {
         welcomeMessageWithNumber(num)
     }
 
-    @GetMapping("/json")
+    @GetMapping("/json", produces = [APPLICATION_JSON_VALUE])
     @ResponseBody
     fun jsonReturn(): String {
         return db.getUsersWithOrders() ?: "[]"
