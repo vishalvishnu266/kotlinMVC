@@ -7,14 +7,17 @@ import kotlinx.html.stream.createHTML
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseBody
 import java.util.*
 
 const val WELCOME_MESSAGE_ROUTE = "/welcome-message"
 const val TEXT_HTML_UTF8 = "${MediaType.TEXT_HTML_VALUE};charset=UTF-8"
 const val HX_GET = "hx-get"
 
-@RestController("/")
-class HelloController {
+@RestController
+@RequestMapping("/")
+class HelloController(private val db: DatabaseRepository) {
     @GetMapping("/", produces = [TEXT_HTML_UTF8])
     fun index(): String {
         val num = Math.random() * 100
@@ -39,8 +42,9 @@ class HelloController {
     }
 
     @GetMapping("/json")
+    @ResponseBody
     fun jsonReturn(): String {
-        return "Hello World"
+        return db.getUsersWithOrders() ?: "[]"
     }
 }
 
